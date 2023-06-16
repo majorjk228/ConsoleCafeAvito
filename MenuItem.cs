@@ -3,13 +3,10 @@
 
 namespace Curs
 {
-    public class MenuItem
+    public partial class MenuItem
     {
-        public static void Input()
+        public static void Input(string name)
         {
-            Console.Write("Введите название пункта меню: ");
-            string name = Console.ReadLine();
-
             Console.Write("Введите цену пункта меню: ");
             double price = double.Parse(Console.ReadLine());
 
@@ -21,11 +18,8 @@ namespace Curs
             Console.WriteLine("Добавлен пункт меню.");
         }
 
-        public static void EditMenuItem()
+        public static void EditMenuItem(string name)
         {
-            Console.Write("Введите название пункта меню для редактирования: ");
-            string name = Console.ReadLine();
-
             Console.Write("Введите новую цену пункта меню: ");
             double price = double.Parse(Console.ReadLine());
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace Curs
 {
@@ -17,11 +18,8 @@ namespace Curs
             }
         }
 
-        public void RemoveMenuItem()
+        public void RemoveMenuItem(string name)
         {
-            Console.Write("Введите название пункта меню, который нужно удалить: ");
-            string name = Console.ReadLine();
-
             MenuItem item = Program.items.Find(i => i?.Name == name);
             if (item != null)
             {
@@ -75,7 +73,7 @@ namespace Curs
             }
         }
 
-        public void Order()
+        public List<MenuItem> Order()
         {
             List<MenuItem> orderItems = new List<MenuItem>(); // Заказанные продукты
 
@@ -85,21 +83,20 @@ namespace Curs
                 string input = Console.ReadLine();
                 if (input == "0")
                 {
-                    return;
+                    return orderItems;
                 }
 
                 MenuItem itemMenu = FindItemByName(items, input);
                 if (itemMenu == null)
                 {
                     Console.WriteLine("Блюдо не найдено!");
-                    return;
+                    return orderItems;
                 }
 
                 orderItems.Add(itemMenu);
-
-                Console.WriteLine("Общая стоимость: " + orderItems.Select(x => x.Price).Sum() + " руб.");
-                Console.WriteLine("Общая калорийность: " + orderItems.Select(x => x.Calories).Sum() + " ккал");
             }
+
+            return orderItems;
         }
 
 
@@ -134,6 +131,7 @@ namespace Curs
 
                 Console.Write("Введите свой выбор: ");
                 string choice = Console.ReadLine();
+                string name;
 
                 switch (choice)
                 {
@@ -141,13 +139,19 @@ namespace Curs
                         mainMenu.ShowItems(items);
                         break;
                     case "2":
-                        MenuItem.Input();
+                        Console.Write("Введите название пункта меню: ");
+                        name = Console.ReadLine();
+                        MenuItem.Input(name);
                         break;
                     case "3":
-                        MenuItem.EditMenuItem();
+                        Console.Write("Введите название пункта меню: ");
+                        name = Console.ReadLine();
+                        MenuItem.EditMenuItem(name);
                         break;
                     case "4":
-                        mainMenu.RemoveMenuItem();
+                        Console.Write("Введите название пункта меню, который нужно удалить: ");
+                        name = Console.ReadLine();
+                        mainMenu.RemoveMenuItem(name);
                         break;
                     case "5":
                         Console.Write("Введите максимальное количество калорий: ");
@@ -175,7 +179,9 @@ namespace Curs
                     case "10":
                         Console.WriteLine("Меню:");
                         mainMenu.ShowItems(items);
-                        mainMenu.Order();
+                        List<MenuItem> orderItems = mainMenu.Order();
+                        Console.WriteLine("Общая стоимость: " + orderItems.Select(x => x.Price).Sum() + " руб.");
+                        Console.WriteLine("Общая калорийность: " + orderItems.Select(x => x.Calories).Sum() + " ккал");
                         break;
                     case "0":
                         exit = true;
